@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29230.47
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IpcListenerApp", "IpcListenerApp\IpcListenerApp.csproj", "{C8F30A82-961F-44F1-96C1-A0C1664E1AF2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C8F30A82-961F-44F1-96C1-A0C1664E1AF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8F30A82-961F-44F1-96C1-A0C1664E1AF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8F30A82-961F-44F1-96C1-A0C1664E1AF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8F30A82-961F-44F1-96C1-A0C1664E1AF2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5F71D0A4-6A1A-49EC-A0A1-D9E128B82344}
+	EndGlobalSection
+EndGlobal
