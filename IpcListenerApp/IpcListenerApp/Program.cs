@@ -20,7 +20,7 @@ namespace IpcListenerApp
             {
                 for (int argIter = 0; argIter < args.Length - 1; argIter++)
                 {
-                    Console.WriteLine(args[argIter]);
+                    // Console.WriteLine(args[argIter]);
                     if (args[argIter] == "--from_time")
                     {
                         fromTime = DateTime.ParseExact(args[argIter + 1], inpTimeFormat, CultureInfo.InvariantCulture);
@@ -39,6 +39,14 @@ namespace IpcListenerApp
             {
                 // return nothing or send empty array                
             }
+            string seq = String.Join(", ", Enumerable.Range(0, 100000).Select(x => x.ToString()).ToArray());
+            int chunkSize = 50000;
+            for (int chunkIter = 0; chunkIter < seq.Length; chunkIter += chunkSize)
+            {
+                Console.Write(seq.Substring(chunkIter, Math.Min(chunkSize, seq.Length - chunkIter)));
+                Console.Out.Flush();
+            }
+            // Console.Write(seq);
             Console.WriteLine($"fromTime = {fromTime.ToString()}, toTime = {toTime.ToString()}, measId = {measId}");
             Console.Out.Flush();
         }

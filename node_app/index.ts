@@ -22,36 +22,24 @@ const measId = "222";
 const getIpcResultAsync = (fromTimeStr: string, toTimeStr: string, measId: string): Promise<string> => {
     return new Promise(function (resolve, reject) {
         const ipc = spawn(`./IpcListenerApp.exe`, ["--from_time", fromTimeStr, "--to_time", toTimeStr, "--meas_id", measId]);
-
+        let res = "";
         ipc.stderr.once('data', function (data) {
             // console.log(data.toString());
             reject(data.toString());
         });
 
-        ipc.stdout.once('data', function (data) {
+        ipc.stdout.on('data', function (data) {
             // console.log(data.toString());
-            resolve(data.toString());
+            // resolve(`result=` + data.toString());
+            res += data.toString();
         });
 
-        ipc.once('exit', (code) => {
+        ipc.once('close', (code: number) => {
+            resolve(res);
             // console.log(`Ipc exe to exit with code: ${code}`);
-            reject("No output before exit");
         });
     });
 }
-// const ipc = spawn(`./IpcListenerApp.exe`, ["--from_time", fromTimeStr, "--to_time", toTimeStr, "--meas_id", measId]);
-
-// ipc.stderr.on('data', function (data) {
-//     console.log(data.toString());
-// });
-
-// ipc.stdout.on('data', function (data) {
-//     console.log(data.toString());
-// });
-
-// ipc.on('exit', (code) => {
-//     console.log(`Ipc exe to exit with code: ${code}`);
-// });
 
 getIpcResultAsync(fromTimeStr, toTimeStr, measId).then((res) => {
     console.log(res);
