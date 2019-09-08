@@ -19,16 +19,40 @@ const fromTimeStr = convertTimeToInpStr(new Date((new Date()).getTime() - 20 * 6
 const toTimeStr = convertTimeToInpStr(new Date((new Date()).getTime() - 10 * 60 * 1000));
 const measId = "222";
 
-const ipc = spawn(`./IpcListenerApp.exe`, ["--from_time", fromTimeStr, "--to_time", toTimeStr, "--meas_id", measId]);
+const getIpcResultAsync = (fromTimeStr: string, toTimeStr: string, measId: string): Promise<string> => {
+    return new Promise(function (resolve, reject) {
+        const ipc = spawn(`./IpcListenerApp.exe`, ["--from_time", fromTimeStr, "--to_time", toTimeStr, "--meas_id", measId]);
 
-ipc.stderr.on('data', function (data) {
-    console.log(data.toString());
-});
+        ipc.stderr.once('data', function (data) {
+            // console.log(data.toString());
+            reject(data.toString());
+        });
 
-ipc.stdout.on('data', function (data) {
-    console.log(data.toString());
-});
+        ipc.stdout.once('data', function (data) {
+            // console.log(data.toString());
+            resolve(data.toString());
+        });
 
-ipc.on('exit', (code) => {
-    console.log(`Ipc exe to exit with code: ${code}`);
+        ipc.once('exit', (code) => {
+            // console.log(`Ipc exe to exit with code: ${code}`);
+            reject("No output before exit");
+        });
+    });
+}
+// const ipc = spawn(`./IpcListenerApp.exe`, ["--from_time", fromTimeStr, "--to_time", toTimeStr, "--meas_id", measId]);
+
+// ipc.stderr.on('data', function (data) {
+//     console.log(data.toString());
+// });
+
+// ipc.stdout.on('data', function (data) {
+//     console.log(data.toString());
+// });
+
+// ipc.on('exit', (code) => {
+//     console.log(`Ipc exe to exit with code: ${code}`);
+// });
+
+getIpcResultAsync(fromTimeStr, toTimeStr, measId).then((res) => {
+    console.log(res);
 });
