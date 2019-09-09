@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -39,16 +40,25 @@ namespace IpcListenerApp
             {
                 // return nothing or send empty array                
             }
-            string seq = String.Join(", ", Enumerable.Range(0, 100000).Select(x => x.ToString()).ToArray());
+
+            List<List<double>> timeseries = new List<List<double>>();
+            Random r = new Random();
             int chunkSize = 50000;
-            for (int chunkIter = 0; chunkIter < seq.Length; chunkIter += chunkSize)
+            for (DateTime dt = fromTime; dt <= toTime; dt = dt.AddMilliseconds(40))
             {
-                Console.Write(seq.Substring(chunkIter, Math.Min(chunkSize, seq.Length - chunkIter)));
+                timeseries.Add(new List<double>() { dt.ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds, r.Next(0, 500) });
+            }
+
+            string outStr = JsonConvert.SerializeObject(timeseries);
+            // string seq = String.Join(", ", Enumerable.Range(0, 100000).Select(x => x.ToString()).ToArray());
+            for (int chunkIter = 0; chunkIter < outStr.Length; chunkIter += chunkSize)
+            {
+                Console.Write(outStr.Substring(chunkIter, Math.Min(chunkSize, outStr.Length - chunkIter)));
                 Console.Out.Flush();
             }
             // Console.Write(seq);
-            Console.WriteLine($"fromTime = {fromTime.ToString()}, toTime = {toTime.ToString()}, measId = {measId}");
-            Console.Out.Flush();
+            // Console.WriteLine($"fromTime = {fromTime.ToString()}, toTime = {toTime.ToString()}, measId = {measId}");
+            // Console.Out.Flush();
         }
     }
 }
